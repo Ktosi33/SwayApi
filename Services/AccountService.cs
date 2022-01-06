@@ -2,17 +2,12 @@
 using SwayApi.Exceptions;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 namespace SwayApi.Services
 {
-    public interface IAccountService
-    {
-        void RegisterUser(RegisterUserDto dto);
-        string GenerateJwt(LoginDto dto);
-    }
+    
     public class AccountService : IAccountService
     {
         private readonly SwayDbContext dbContext;

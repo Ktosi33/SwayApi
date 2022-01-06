@@ -1,5 +1,6 @@
 global using SwayApi.Entities;
 global using SwayApi.Services;
+global using SwayApi.Services.Interfaces;
 global using SwayApi.Models;
 global using SwayApi.Models.Validators;
 global using SwayApi.Controllers;
@@ -49,8 +50,9 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
-
+builder.Services.AddScoped<IToDoTaskService, ToDoTaskService>();
 var app = builder.Build();
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 // Configure the HTTP request pipeline.
 app.UseCors(x => x
              .AllowAnyMethod()

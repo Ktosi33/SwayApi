@@ -7,13 +7,18 @@ namespace SwayApi.Entities
               "Server=localhost;Port=5432;Database=SwayDb;Username=postgres;Password=root";
         public DbSet<User> Users { get; set; } 
         public DbSet<Role> Roles { get; set; }
-      
+        public DbSet<ToDoTask> ToDoTasks { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Role>()
                .Property(u => u.Name)
                .IsRequired();
+
+            modelBuilder.Entity<ToDoTask>()
+               .Property(t => t.Title)
+               .IsRequired();
+
             modelBuilder.Entity<Role>()
                 .HasData(
                 new Role()

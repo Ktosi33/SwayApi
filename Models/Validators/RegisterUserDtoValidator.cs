@@ -11,7 +11,7 @@ namespace SwayApi.Models.Validators
             
             RuleFor(x => x.Password).MinimumLength(6);
 
-            RuleFor(x => x.ConfirmPassword).Equal(e => e.Password).WithMessage("Podane hasła nie są sobie równe") ;
+            RuleFor(x => x.ConfirmPassword).Equal(e => e.Password).WithMessage("Podane hasła nie są sobie równe");
 
             RuleFor(x => x.Email)
                 .Custom((value, context) =>
