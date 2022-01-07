@@ -46,5 +46,28 @@ namespace SwayApi.Services
             return tasks.ToList();
         }
 
+        public ToDoTask GetById(int id)
+        {
+            var toDoTask = dbContext.ToDoTasks.FirstOrDefault(t => t.Id == id);
+            if (toDoTask is null)
+            {
+                throw new NotFoundException($"Nie znaleziono zadania o id {id}");
+            }
+            return toDoTask;
+
+        }
+
+        public void UpdateTask(UpdateToDoTaskDto dto, int id)
+        {
+            var toDoTask = dbContext.ToDoTasks.FirstOrDefault(t => t.Id == id);
+            if(toDoTask is null)
+            {
+                throw new NotFoundException($"Nie znaleziono zadania o id {id}");
+            }    
+            toDoTask.Title = dto.Title;
+            toDoTask.Description = dto.Description;
+
+            dbContext.SaveChanges();
+        }
     }
 }

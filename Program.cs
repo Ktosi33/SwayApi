@@ -5,6 +5,7 @@ global using SwayApi.Models;
 global using SwayApi.Models.Validators;
 global using SwayApi.Controllers;
 global using SwayApi.Middleware;
+global using SwayApi.Exceptions;
 global using SwayApi;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -51,6 +52,8 @@ builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
 builder.Services.AddScoped<IToDoTaskService, ToDoTaskService>();
+builder.Services.AddScoped<UserRoleService>();
+builder.Services.AddScoped<ToDoTaskStateService>();
 var app = builder.Build();
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 // Configure the HTTP request pipeline.

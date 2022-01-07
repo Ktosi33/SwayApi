@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+
 using SwayApi.Models;
 namespace SwayApi.Controllers
 {
-    [Route("v1/account")]
+    [Route("v1/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
     {

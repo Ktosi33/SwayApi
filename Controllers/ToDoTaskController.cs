@@ -2,7 +2,7 @@
 using SwayApi.Services.Interfaces;
 namespace SwayApi.Controllers
 {
-    [Route("v1/todotask")]
+    [Route("v1/[controller]")]
     [ApiController]
     public class ToDoTaskController : ControllerBase
     {
@@ -18,6 +18,11 @@ namespace SwayApi.Controllers
         {
             return Ok(toDoTaskService.GetAll());
         }
+        [HttpGet("{id}")]
+        public ActionResult GetById([FromRoute]int id)
+        {
+            return Ok(toDoTaskService.GetById(id));
+        }
 
         [HttpPost]
         public ActionResult AddTask([FromBody] ToDoTaskDto dto)
@@ -25,10 +30,10 @@ namespace SwayApi.Controllers
             toDoTaskService.AddTask(dto);
             return Ok();
         }
-        [HttpPut]
-        public ActionResult updateTask([FromBody] ToDoTaskDto dt)
+        [HttpPut("{id}")]
+        public ActionResult UpdateTask([FromBody] UpdateToDoTaskDto dto, [FromRoute]int id)
         {
-
+            toDoTaskService.UpdateTask(dto, id);
             return Ok();
         }
         [HttpDelete("{id}")]

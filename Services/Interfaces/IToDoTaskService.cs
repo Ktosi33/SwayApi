@@ -3,7 +3,9 @@
     public interface IToDoTaskService
     {
         public IEnumerable<ToDoTask> GetAll();
+        public ToDoTask GetById(int id);
         public void AddTask(ToDoTaskDto dto);
-        void DeleteTask(int id);
+        public void DeleteTask(int id);
+        public void UpdateTask(UpdateToDoTaskDto dto, int id);
     }
 }

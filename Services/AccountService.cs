@@ -70,5 +70,6 @@ namespace SwayApi.Services
             dbContext.Users.Add(newUser); 
             dbContext.SaveChanges();
         }
+
     }
 }

@@ -4,5 +4,6 @@
     {
         void RegisterUser(RegisterUserDto dto);
         string GenerateJwt(LoginDto dto);
+
     }
 }
