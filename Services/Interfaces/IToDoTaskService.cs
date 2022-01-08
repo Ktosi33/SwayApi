@@ -7,5 +7,6 @@
         public void AddTask(ToDoTaskDto dto);
         public void DeleteTask(int id);
         public void UpdateTask(UpdateToDoTaskDto dto, int id);
+        public void UpdateTaskState(int id, bool? state);
     }
 }

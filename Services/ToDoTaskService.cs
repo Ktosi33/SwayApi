@@ -69,5 +69,32 @@ namespace SwayApi.Services
 
             dbContext.SaveChanges();
         }
+
+        public void UpdateTaskState(int id, bool? state)
+        {
+            var toDoTask = dbContext.ToDoTasks.FirstOrDefault(t => t.Id == id);
+            if (state is null)
+            {
+                throw new BadRequestException($"Wystapił nieoczekiwany błąd");
+
+            }
+
+            if (toDoTask is null)
+            {
+                throw new NotFoundException($"Nie znaleziono zadnaia o id {id}");
+            }
+
+                if (state == true)
+            {
+                toDoTask.EndedDate = DateTime.Now;
+                toDoTask.IsCompleted = true;
+            }
+            else
+            {
+                toDoTask.EndedDate = DateTime.MinValue;
+                toDoTask.IsCompleted = false;
+            }
+            dbContext.SaveChanges();
+        }
     }
 }

@@ -19,7 +19,7 @@ namespace SwayApi.Controllers
             return Ok(toDoTaskService.GetAll());
         }
         [HttpGet("{id}")]
-        public ActionResult GetById([FromRoute]int id)
+        public ActionResult GetById([FromRoute] int id)
         {
             return Ok(toDoTaskService.GetById(id));
         }
@@ -31,17 +31,26 @@ namespace SwayApi.Controllers
             return Ok();
         }
         [HttpPut("{id}")]
-        public ActionResult UpdateTask([FromBody] UpdateToDoTaskDto dto, [FromRoute]int id)
+        public ActionResult UpdateTask([FromBody] UpdateToDoTaskDto? dto, [FromRoute] int id, [FromQuery(Name = "state")] bool? state)
         {
-            toDoTaskService.UpdateTask(dto, id);
+            if (state == null)
+            {
+                toDoTaskService.UpdateTask(dto, id);
+                
+            }
+            else
+            {
+                toDoTaskService.UpdateTaskState(id, state);
+            }
+
             return Ok();
         }
         [HttpDelete("{id}")]
-        public ActionResult DeleteTask([FromRoute]int id)
+        public ActionResult DeleteTask([FromRoute] int id)
         {
             toDoTaskService.DeleteTask(id);
             return Ok();
         }
-
+     
     }
 }
