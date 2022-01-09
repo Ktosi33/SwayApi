@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 namespace SwayApi.Services
 {
     
@@ -20,7 +21,22 @@ namespace SwayApi.Services
             this.passwordHasher = passwordHasher;
             this.authenticationSettings = authenticationSettings;
         }
+        public string GetInformation(int id)
+        {
+            var user = dbContext.Users.Include(u => u.Role).FirstOrDefault(u => u.Id == id);
 
+            if (user is null)
+            {
+                throw new BadRequestException("Zły adres email lub hasło");
+            }
+            UserInformationDto dto = new UserInformationDto();
+            dto.Id = id;
+            dto.Email = user.Email;
+            dto.RoleName = user.Role.Name;
+            //TODO: Check it
+            return JsonConvert.SerializeObject(dto);
+
+        }
         public string GenerateJwt(LoginDto dto)
         {
            
@@ -39,8 +55,7 @@ namespace SwayApi.Services
             var claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Role, $"{user.Role.Name}")
-               
+                new Claim(ClaimTypes.Role, $"{user.Role.Name}")  
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

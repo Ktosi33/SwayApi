@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-
+using System.Security.Claims;
 using SwayApi.Models;
 namespace SwayApi.Controllers
 {
@@ -14,7 +14,14 @@ namespace SwayApi.Controllers
         {
             this.accountService = accountService;
         }
-
+        [Authorize]
+        [HttpGet]
+        public ActionResult GetInformation()
+        {
+            return Ok(accountService.GetInformation(
+                int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))
+                ));
+        }
         [HttpPost("register")]
         public ActionResult RegisterUser([FromBody]RegisterUserDto dto)
         {
