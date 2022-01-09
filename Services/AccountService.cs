@@ -40,7 +40,7 @@ namespace SwayApi.Services
         public string GenerateJwt(LoginDto dto)
         {
            
-            var user = dbContext.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == dto.Email);
+            var user = dbContext.Users.FirstOrDefault(u => u.Email == dto.Email);
            
             if (user is null)
             {
@@ -51,11 +51,23 @@ namespace SwayApi.Services
             {
                 throw new BadRequestException("Zły adres email lub hasło");
             }
-            
+            return writeToken(dto.Email);
+
+
+        }
+        public string writeToken(string email)
+        {
+            var user = dbContext.Users.Include(u => u.Role).FirstOrDefault(u => u.Email == email);
+
+            if (user is null)
+            {
+                throw new BadRequestException("Zły adres email");
+            }
             var claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Role, $"{user.Role.Name}")  
+                new Claim(ClaimTypes.Email, user.Email.ToString()),
+                new Claim(ClaimTypes.Role, $"{user.Role.Name}")
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -70,7 +82,6 @@ namespace SwayApi.Services
             var tokenHandler = new JwtSecurityTokenHandler();
             return tokenHandler.WriteToken(token);
         }
-
         public void RegisterUser(RegisterUserDto dto)
         {
             var newUser = new User()

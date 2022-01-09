@@ -28,6 +28,8 @@ namespace SwayApi.Services
             return result;
         }
 
+       
+
         internal void DeleteUserById(int id)
         {
             var user = dbContext.Users.FirstOrDefault(u => u.Id == id);

@@ -1,5 +1,11 @@
-﻿using SwayApi.Exceptions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using SwayApi.Exceptions;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Newtonsoft.Json;
 namespace SwayApi.Services
 {
     public class UserRoleService
@@ -36,7 +42,9 @@ namespace SwayApi.Services
                 throw new NotFoundException($"Nie znaleziono użytkownika o adresie email: {dto.UserEmail}");
             }
             user.RoleId = dto.RoleId;
+           
             dbContext.SaveChanges();
+           
         }
 
 

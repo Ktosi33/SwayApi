@@ -5,7 +5,7 @@ namespace SwayApi.Controllers
 {
     [Route("v1/[controller]")]
     [ApiController]
-    [Authorize]
+ 
     public class UserRoleController : ControllerBase
     {
         private readonly UserRoleService roleService;
@@ -14,14 +14,14 @@ namespace SwayApi.Controllers
         {
             this.roleService = roleService;
         }
-
+        [Authorize]
         [HttpGet]
         public ActionResult getRole()
         {
             string role = User.FindFirstValue(ClaimTypes.Role);
             return Ok(role);
         }
-
+        [Authorize]
         [HttpGet("{id}")]
         public ActionResult getRoleId([FromRoute] int id)
         {

@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
 namespace SwayApi.Controllers
 {
     [ApiController]
@@ -17,7 +20,20 @@ namespace SwayApi.Controllers
             return Ok(usersService.GetAllWithoutPassword());
         }
 
-    [HttpDelete("{id}")]
+     [Authorize]
+     [HttpGet("current")]
+     public ActionResult GetCurrentWithoutPassword()
+     { 
+            return Ok(new UserInformationDto()
+            {
+                Id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+                Email = User.FindFirstValue(ClaimTypes.Email),
+                RoleName = User.FindFirstValue(ClaimTypes.Role)
+            });
+     }
+
+
+        [HttpDelete("{id}")]
     public ActionResult DeleteUser([FromRoute] int id)
         {
             usersService.DeleteUserById(id);
