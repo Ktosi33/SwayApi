@@ -6,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+
 namespace SwayApi.Services
 {
     
@@ -31,7 +32,7 @@ namespace SwayApi.Services
             }
             UserInformationDto dto = new UserInformationDto();
             dto.Id = id;
-            dto.Email = user.Email;
+            dto.Email = WebUtility.HtmlEncode(user.Email);
             dto.RoleName = user.Role.Name;
             //TODO: Check it
             return JsonConvert.SerializeObject(dto);
@@ -39,7 +40,7 @@ namespace SwayApi.Services
         }
         public string GenerateJwt(LoginDto dto)
         {
-           
+           dto.Email = WebUtility.HtmlEncode(dto.Email);
             var user = dbContext.Users.FirstOrDefault(u => u.Email == dto.Email);
            
             if (user is null)
@@ -86,7 +87,7 @@ namespace SwayApi.Services
         {
             var newUser = new User()
             {
-                Email = dto.Email,
+                Email = WebUtility.HtmlEncode(dto.Email),
                 RoleId = dto.RoleId,
             };
             var hashedPassword = passwordHasher.HashPassword(newUser, dto.Password);

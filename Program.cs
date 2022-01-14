@@ -7,11 +7,14 @@ global using SwayApi.Controllers;
 global using SwayApi.Middleware;
 global using SwayApi.Exceptions;
 global using SwayApi;
+global using System.Net; 
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Encodings.Web;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -41,7 +44,6 @@ builder.Services.AddAuthentication(option =>
 builder.Services.AddCors();
 builder.Services.AddControllers().AddFluentValidation();
 
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -50,11 +52,17 @@ builder.Services.AddScoped<SwaySeed>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
+
 builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
+builder.Services.AddScoped<IValidator<LoginDto>, LoginDtoValidator>();
+builder.Services.AddScoped<IValidator<ToDoTaskDto>, ToDoTaskDtoValidator>();
+builder.Services.AddScoped<IValidator<UpdateToDoTaskDto>, UpdateToDoTaskDtoValidator>();
+
 builder.Services.AddScoped<IToDoTaskService, ToDoTaskService>();
 builder.Services.AddScoped<UserRoleService>();
 builder.Services.AddScoped<UsersService>();
 var app = builder.Build();
+
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 // Configure the HTTP request pipeline.
 app.UseCors(x => x
@@ -74,6 +82,7 @@ app.UseAuthentication();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
 
 app.MapControllers();
 

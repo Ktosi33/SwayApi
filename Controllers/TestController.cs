@@ -9,8 +9,8 @@ namespace SwayApi.Controllers
         [HttpGet]
         public ActionResult get()
         {
-            return Ok("Dziala wszystko");
-            
+            return Ok();
+         
         }
 
     }

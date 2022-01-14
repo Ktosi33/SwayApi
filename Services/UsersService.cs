@@ -30,7 +30,7 @@ namespace SwayApi.Services
 
        
 
-        internal void DeleteUserById(int id)
+        public void DeleteUserById(int id)
         {
             var user = dbContext.Users.FirstOrDefault(u => u.Id == id);
             if (user == null)

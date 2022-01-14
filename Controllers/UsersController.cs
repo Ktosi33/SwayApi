@@ -4,8 +4,10 @@ using System.Security.Claims;
 
 namespace SwayApi.Controllers
 {
-    [ApiController]
+    
     [Route("v1/[controller]")]
+    [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly UsersService usersService;
@@ -14,14 +16,15 @@ namespace SwayApi.Controllers
         {
             this.usersService = usersService;
         }
-    [HttpGet]
+        [Authorize(Roles = "Manager")]
+        [HttpGet]
     public ActionResult GetAllWithoutPassword()
         {
             return Ok(usersService.GetAllWithoutPassword());
         }
 
-     [Authorize]
-     [HttpGet("current")]
+        [Authorize]
+        [HttpGet("current")]
      public ActionResult GetCurrentWithoutPassword()
      { 
             return Ok(new UserInformationDto()
@@ -32,7 +35,7 @@ namespace SwayApi.Controllers
             });
      }
 
-
+        [Authorize(Roles = "Manager")]
         [HttpDelete("{id}")]
     public ActionResult DeleteUser([FromRoute] int id)
         {

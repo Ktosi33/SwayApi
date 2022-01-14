@@ -1,11 +1,14 @@
 ﻿using SwayApi.Exceptions;
+using System.Text.Encodings.Web;
+using System.Net;
+
 
 namespace SwayApi.Services
 {
     public class ToDoTaskService : IToDoTaskService
     {
         private readonly SwayDbContext dbContext;
-
+      
         public ToDoTaskService(SwayDbContext dbContext)
         {
             this.dbContext = dbContext;
@@ -13,17 +16,22 @@ namespace SwayApi.Services
 
         public void AddTask(ToDoTaskDto dto)
         {
+            
+           
+            
             var newTask = new ToDoTask()
             {
-                Title = dto.Title,
-                Description = dto.Description,
+                Title = WebUtility.HtmlEncode(dto.Title),
+                Description = WebUtility.HtmlEncode(dto.Description),
                 IsCompleted = dto.IsCompleted,
                 CreatedDate = dto.CreatedDate, 
+                
             };
+            
             dbContext.ToDoTasks.Add(newTask);
             dbContext.SaveChanges();
         }
-
+        
         public void DeleteTask(int id)
         {
             var tasks = dbContext.ToDoTasks.FirstOrDefault(t => t.Id == id);
@@ -42,7 +50,11 @@ namespace SwayApi.Services
             {
                 throw new NotFoundException("Nie znaleziono żadnego zadania");
             }
-
+           foreach (ToDoTask t in tasks)
+            {
+               t.Title = t.Title;
+               t.Description = t.Description; 
+            } 
             return tasks.ToList();
         }
 
@@ -53,10 +65,13 @@ namespace SwayApi.Services
             {
                 throw new NotFoundException($"Nie znaleziono zadania o id {id}");
             }
+
+            toDoTask.Title = WebUtility.HtmlDecode(toDoTask.Title);
+            toDoTask.Description = WebUtility.HtmlDecode(toDoTask.Description);
             return toDoTask;
 
         }
-
+        //WebUtility.HtmlEncode(toDoTask.Description)
         public void UpdateTask(UpdateToDoTaskDto dto, int id)
         {
             var toDoTask = dbContext.ToDoTasks.FirstOrDefault(t => t.Id == id);
@@ -64,8 +79,8 @@ namespace SwayApi.Services
             {
                 throw new NotFoundException($"Nie znaleziono zadania o id {id}");
             }    
-            toDoTask.Title = dto.Title;
-            toDoTask.Description = dto.Description;
+            toDoTask.Title = WebUtility.HtmlEncode(dto.Title);
+            toDoTask.Description = WebUtility.HtmlEncode(dto.Description);
 
             dbContext.SaveChanges();
         }

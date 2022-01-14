@@ -22,13 +22,14 @@ namespace SwayApi.Controllers
                 int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))
                 ));
         }
+        [AllowAnonymous]
         [HttpPost("register")]
         public ActionResult RegisterUser([FromBody]RegisterUserDto dto)
         {
           accountService.RegisterUser(dto);
           return Ok();
         }
-
+        [AllowAnonymous]
         [HttpPost("login")]
         public ActionResult Login([FromBody]LoginDto dto)
         {
