@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using SwayApi.Services.Interfaces;
 using System.Text.Encodings.Web;
+using System.Security.Claims;
+
 namespace SwayApi.Controllers
 {
     [Route("v1/[controller]")]
@@ -50,7 +52,7 @@ namespace SwayApi.Controllers
             }
             else
             {
-                toDoTaskService.UpdateTaskState(id, state);
+                toDoTaskService.UpdateTaskState(id, state, int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
             }
 
             return Ok();

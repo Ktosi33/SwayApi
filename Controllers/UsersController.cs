@@ -11,10 +11,12 @@ namespace SwayApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly UsersService usersService;
+        private readonly IToDoTaskService toDoTaskService;
 
-        public UsersController(UsersService usersService)
+        public UsersController(UsersService usersService, IToDoTaskService toDoTaskService)
         {
             this.usersService = usersService;
+            this.toDoTaskService = toDoTaskService;
         }
         [Authorize(Roles = "Manager")]
         [HttpGet]
@@ -22,7 +24,12 @@ namespace SwayApi.Controllers
         {
             return Ok(usersService.GetAllWithoutPassword());
         }
-
+        [Authorize]
+        [HttpGet("tdtsdone")]
+        public ActionResult GetAllDoneTdt()
+        {
+            return Ok(toDoTaskService.GetAllByUserId(int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))));
+        }
         [Authorize]
         [HttpGet("current")]
      public ActionResult GetCurrentWithoutPassword()

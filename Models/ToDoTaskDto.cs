@@ -6,6 +6,8 @@
         public string Description { get; set; }
         public bool IsCompleted { get; set; } = false;
         public DateTime CreatedDate { get; set; } = DateTime.Now;
-        
+        public int? userId { get; set; } = null;
+
+
     }
 }

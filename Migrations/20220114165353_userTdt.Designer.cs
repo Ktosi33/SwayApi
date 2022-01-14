@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SwayApi.Entities;
@@ -11,9 +12,10 @@ using SwayApi.Entities;
 namespace SwayApi.Migrations
 {
     [DbContext(typeof(SwayDbContext))]
-    partial class SwayDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220114165353_userTdt")]
+    partial class userTdt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

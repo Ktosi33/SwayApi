@@ -40,8 +40,8 @@ namespace SwayApi.Entities
             modelBuilder.Entity<User>()
                 .Property(u => u.Email)
                 .IsRequired();
+            
 
-           
         }
      protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
               => optionsBuilder.UseNpgsql(_connectionString);

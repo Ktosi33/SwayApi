@@ -7,7 +7,6 @@
         public string PasswordHash { get; set; }
         public int RoleId { get; set; }
         public virtual Role Role { get; set; }
-
-        
+        public virtual List<ToDoTask>? ToDoTasks { get; set; }
     }
 }

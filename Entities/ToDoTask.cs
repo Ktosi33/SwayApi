@@ -8,6 +8,8 @@
         public bool IsCompleted { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime EndedDate { get; set; }
+        public int? userId { get; set; }
+        public virtual User? User { get; set; }
 
     }
 }

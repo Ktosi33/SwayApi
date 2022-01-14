@@ -1,7 +1,7 @@
 ﻿using SwayApi.Exceptions;
 using System.Text.Encodings.Web;
 using System.Net;
-
+using System.Security.Claims;
 
 namespace SwayApi.Services
 {
@@ -71,6 +71,23 @@ namespace SwayApi.Services
             return toDoTask;
 
         }
+
+        public IEnumerable<ToDoTask> GetAllByUserId(int id)
+        {
+
+            var toDoTask = dbContext.ToDoTasks.Where<ToDoTask>(t => t.userId == id);
+            if (!toDoTask.Any())
+            {
+                throw new NotFoundException($"Nie znaleziono żadnego zadania");
+            }
+            foreach (ToDoTask t in toDoTask)
+            {
+                t.Title = WebUtility.HtmlDecode(t.Title);
+                t.Description = WebUtility.HtmlDecode(t.Description);
+            }
+            return toDoTask.ToList();
+
+        }
         //WebUtility.HtmlEncode(toDoTask.Description)
         public void UpdateTask(UpdateToDoTaskDto dto, int id)
         {
@@ -85,7 +102,7 @@ namespace SwayApi.Services
             dbContext.SaveChanges();
         }
 
-        public void UpdateTaskState(int id, bool? state)
+        public void UpdateTaskState(int id, bool? state, int? userId)
         {
             var toDoTask = dbContext.ToDoTasks.FirstOrDefault(t => t.Id == id);
             if (state is null)
@@ -103,11 +120,14 @@ namespace SwayApi.Services
             {
                 toDoTask.EndedDate = DateTime.Now;
                 toDoTask.IsCompleted = true;
+                //toDoTask.userId = 
+                toDoTask.userId = userId;
             }
             else
             {
                 toDoTask.EndedDate = DateTime.MinValue;
                 toDoTask.IsCompleted = false;
+                toDoTask.userId = null;
             }
             dbContext.SaveChanges();
         }

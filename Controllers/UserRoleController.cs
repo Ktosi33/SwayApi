@@ -19,6 +19,7 @@ namespace SwayApi.Controllers
         public ActionResult getRole()
         {
             string role = User.FindFirstValue(ClaimTypes.Role);
+           
             return Ok(role);
         }
         [Authorize(Roles = "Manager")]
