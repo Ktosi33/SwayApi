@@ -82,8 +82,8 @@ namespace SwayApi.Services
             }
             foreach (ToDoTask t in toDoTask)
             {
-                t.Title = WebUtility.HtmlDecode(t.Title);
-                t.Description = WebUtility.HtmlDecode(t.Description);
+                t.Title = t.Title;
+                t.Description = t.Description;
             }
             return toDoTask.ToList();
 
